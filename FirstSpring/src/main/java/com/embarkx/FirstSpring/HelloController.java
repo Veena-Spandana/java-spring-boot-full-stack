@@ -15,6 +15,11 @@ public class HelloController {
         return new HelloResponse("Hello, " + name);
     }
 
+    @GetMapping("/hello/{name}/show")
+    public HelloResponse helloParamShow(@PathVariable String name){
+        return new HelloResponse("Hello, " + name);
+    }
+
     @PostMapping("/hello")
     public HelloResponse hello(@RequestBody String name){
         return new HelloResponse("Hello " + name + " !!!");
