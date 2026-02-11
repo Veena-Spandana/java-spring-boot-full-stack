@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
 
 //    private List<Category> categories = new ArrayList<>();
 //    private Long nextId = 1L;
@@ -36,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService{
     public String deleteCategory(Long categoryId) {
 
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
 
         categoryRepository.delete(category);
         return "Category with categoryId: " + categoryId + " deleted successfully !";
@@ -48,9 +48,10 @@ public class CategoryServiceImpl implements CategoryService{
         Category savedCategory = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
 
-        category.setCategoryId(categoryId);
-        savedCategory = categoryRepository.save(category);
-        return savedCategory;
-
+//        category.setCategoryId(categoryId);
+//        savedCategory = categoryRepository.save(category);
+//        return savedCategory;
+        return null;
     }
 }
+
