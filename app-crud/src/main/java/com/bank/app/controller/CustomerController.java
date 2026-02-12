@@ -4,7 +4,6 @@ import com.bank.app.model.Customer;
 import com.bank.app.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,10 +17,10 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PostMapping("/api/customers")
-    public String createCustomer(@RequestBody Customer customer){ // Accepts a JSON request to create a new
+    public ResponseEntity<String> createCustomer(@RequestBody Customer customer){ // Accepts a JSON request to create a new
                                                                         // customer and returns the created customer.
-        String status = customerService.createCustomer(customer);
-        return new ResponseEntity<>(HttpStatus.CREATED, "Customer created successfully!");
+        customerService.createCustomer(customer);
+        return new ResponseEntity<>("Customer created successfully!",HttpStatus.CREATED);
 
     }
 
