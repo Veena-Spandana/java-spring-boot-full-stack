@@ -1,0 +1,27 @@
+package com.embarkx.FirstSpring;
+
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+public class HelloController {
+
+    @GetMapping("/hello")
+    public HelloResponse hello(){
+        return new HelloResponse("Hello World!!!");
+    }
+
+    @GetMapping("/hello/{name}")
+    public HelloResponse helloParam(@PathVariable String name){
+        return new HelloResponse("Hello, " + name);
+    }
+
+    @GetMapping("/hello/{name}/show")
+    public HelloResponse helloParamShow(@PathVariable String name){
+        return new HelloResponse("Hello, " + name);
+    }
+
+    @PostMapping("/hello")
+    public HelloResponse hello(@RequestBody String name){
+        return new HelloResponse("Hello " + name + " !!!");
+    }
+}
