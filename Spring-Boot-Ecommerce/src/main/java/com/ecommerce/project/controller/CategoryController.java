@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/api")
 public class CategoryController {
@@ -20,10 +21,19 @@ public class CategoryController {
 //        this.categoryService = categoryService;
 //    }
 
+//    @GetMapping("/echo")
+//    public ResponseEntity<String> echoMessage(@RequestParam(name = "message") String message){
+////        public ResponseEntity<String> echoMessage (@RequestParam(name = "message", defaultValue = "Hello World!!!" , required = false) String message){
+//        return new ResponseEntity<>("Echoed message: " + message, HttpStatus.OK);
+//    }
+
     @GetMapping("/public/categories")
     //@RequestMapping(value = "public/categories", method = RequestMethod.GET)
-    public ResponseEntity<CategoryResponse> getAllCategories(){
-        CategoryResponse categoryResponse = categoryService.getAllCategories();
+    public ResponseEntity<CategoryResponse> getAllCategories(
+            @RequestParam(name = "pageNumber") Integer pageNumber,
+            @RequestParam(name = "pageSize") Integer pageSize
+    ){
+        CategoryResponse categoryResponse = categoryService.getAllCategories(pageNumber,pageSize);
         return new ResponseEntity<>(categoryResponse, HttpStatus.OK);
     }
 
