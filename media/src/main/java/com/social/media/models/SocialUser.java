@@ -1,4 +1,4 @@
-package com.social.media.model;
+package com.social.media.models;
 
 import jakarta.persistence.*;
 
@@ -26,6 +26,6 @@ public class SocialUser {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id")
     )
-    private Set<Group> groups = new HashSet<>();
+    private Set<SocialGroup> groups = new HashSet<>();
 
 }

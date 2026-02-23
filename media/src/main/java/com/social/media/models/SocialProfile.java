@@ -1,4 +1,4 @@
-package com.social.media.model;
+package com.social.media.models;
 
 import jakarta.persistence.*;
 
