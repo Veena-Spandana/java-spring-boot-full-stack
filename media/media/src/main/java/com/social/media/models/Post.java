@@ -6,21 +6,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SocialGroup {
-
+public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @ManyToMany(mappedBy = "groups")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     @JsonIgnore
-    private Set<SocialUser> socialUsers = new HashSet<>();
+    private SocialUser socialUser;
 }

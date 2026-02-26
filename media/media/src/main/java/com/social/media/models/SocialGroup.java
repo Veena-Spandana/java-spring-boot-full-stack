@@ -6,27 +6,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SocialProfile {
-
+public class SocialGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-//    @OneToOne(mappedBy = "socialProfile")
-    @JoinColumn(name = "social_user")
+    @ManyToMany(mappedBy = "groups")
     @JsonIgnore
-    private SocialUser user;
+    private Set<SocialUser> socialUsers = new HashSet<>();
 
-    private String description;
-
-    public void setSocialUser(SocialUser socialUser){
-        this.user = socialUser;
-        if(user.getSocialProfile() != this)
-            user.setSocialProfile(this);
+    @Override
+    public int hashCode(){
+        return Objects.hash(id);
     }
 }

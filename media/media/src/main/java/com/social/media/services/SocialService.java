@@ -9,21 +9,21 @@ import java.util.List;
 
 @Service
 public class SocialService {
-
     @Autowired
-    private SocialUserRepository socialUserRepository;
+    SocialUserRepository socialUserRepository;
 
     public List<SocialUser> getAllUsers() {
         return socialUserRepository.findAll();
     }
 
     public SocialUser saveUser(SocialUser socialUser) {
-         return socialUserRepository.save(socialUser);
+        return socialUserRepository.save(socialUser);
     }
 
-    public void deleteUser(Long userId) {
-        SocialUser socialUser = socialUserRepository.findById(userId)
+    public SocialUser deleteUser(Long id) {
+        SocialUser socialUser = socialUserRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         socialUserRepository.delete(socialUser);
+        return socialUser;
     }
 }
