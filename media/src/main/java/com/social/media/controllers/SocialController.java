@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 public class SocialController {
-
     @Autowired
     private SocialService socialService;
 
@@ -21,7 +20,7 @@ public class SocialController {
     }
 
     @PostMapping("/social/users")
-    public ResponseEntity<SocialUser> saveUsers(@RequestBody SocialUser socialUser){
+    public ResponseEntity<SocialUser> saveUser(@RequestBody SocialUser socialUser){
         return new ResponseEntity<>(socialService.saveUser(socialUser), HttpStatus.CREATED);
     }
 

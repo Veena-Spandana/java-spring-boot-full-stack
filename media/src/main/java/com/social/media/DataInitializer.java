@@ -1,46 +1,45 @@
 package com.social.media;
 
-import com.social.media.models.Post;
-import com.social.media.models.SocialGroup;
-import com.social.media.models.SocialProfile;
-import com.social.media.models.SocialUser;
 import com.social.media.repositories.PostRepository;
-import com.social.media.repositories.SocialGroupRepository;
 import com.social.media.repositories.SocialProfileRepository;
-import com.social.media.repositories.SocialUserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.social.media.models.Post;
+import com.social.media.models.SocialGroup;
+import com.social.media.models.SocialProfile;
+import com.social.media.models.SocialUser;
+import com.social.media.repositories.SocialGroupRepository;
+import com.social.media.repositories.SocialUserRepository;
+
 @Configuration
 public class DataInitializer {
 
-    private final SocialUserRepository socialUserRepository;
-    private final SocialGroupRepository socialGroupRepository;
-    private final PostRepository postRepository;
+    private final SocialUserRepository userRepository;
+    private final SocialGroupRepository groupRepository;
     private final SocialProfileRepository socialProfileRepository;
+    private final PostRepository postRepository;
 
-    public DataInitializer(SocialUserRepository socialUserRepository, SocialGroupRepository socialGroupRepository, PostRepository postRepository, SocialProfileRepository socialProfileRepository) {
-        this.socialUserRepository = socialUserRepository;
-        this.socialGroupRepository = socialGroupRepository;
-        this.postRepository = postRepository;
+    public DataInitializer(SocialUserRepository userRepository, SocialGroupRepository groupRepository, SocialProfileRepository socialProfileRepository, PostRepository postRepository) {
+        this.userRepository = userRepository;
+        this.groupRepository = groupRepository;
         this.socialProfileRepository = socialProfileRepository;
+        this.postRepository = postRepository;
     }
 
-
     @Bean
-    public CommandLineRunner initializeData(){
+    public CommandLineRunner initializeData() {
         return args -> {
-
             // Create some users
             SocialUser user1 = new SocialUser();
             SocialUser user2 = new SocialUser();
             SocialUser user3 = new SocialUser();
 
             // Save users to the database
-            socialUserRepository.save(user1);
-            socialUserRepository.save(user2);
-            socialUserRepository.save(user3);
+            userRepository.save(user1);
+            userRepository.save(user2);
+            userRepository.save(user3);
 
             // Create some groups
             SocialGroup group1 = new SocialGroup();
@@ -49,12 +48,13 @@ public class DataInitializer {
             // Add users to groups
             group1.getSocialUsers().add(user1);
             group1.getSocialUsers().add(user2);
+
             group2.getSocialUsers().add(user2);
             group2.getSocialUsers().add(user3);
 
             // Save groups to the database
-            socialGroupRepository.save(group1);
-            socialGroupRepository.save(group2);
+            groupRepository.save(group1);
+            groupRepository.save(group2);
 
             // Associate users with groups
             user1.getGroups().add(group1);
@@ -63,9 +63,10 @@ public class DataInitializer {
             user3.getGroups().add(group2);
 
             // Save users back to database to update associations
-            socialUserRepository.save(user1);
-            socialUserRepository.save(user2);
-            socialUserRepository.save(user3);
+            userRepository.save(user1);
+            userRepository.save(user2);
+            userRepository.save(user3);
+
 
             // Create some posts
             Post post1 = new Post();
@@ -78,9 +79,9 @@ public class DataInitializer {
             post3.setSocialUser(user3);
 
             // Save posts to the database (assuming you have a PostRepository)
-            postRepository.save(post1);
-            postRepository.save(post2);
-            postRepository.save(post3);
+             postRepository.save(post1);
+             postRepository.save(post2);
+             postRepository.save(post3);
 
             // Create some social profiles
             SocialProfile profile1 = new SocialProfile();

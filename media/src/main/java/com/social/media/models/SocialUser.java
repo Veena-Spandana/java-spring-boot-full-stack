@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.*;
 
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -16,8 +17,8 @@ public class SocialUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "user",  cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JoinColumn(name = "social_profile_id")
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.ALL})
+    //@JoinColumn(name = "social_profile_id")
     private SocialProfile socialProfile;
 
     @OneToMany(mappedBy = "socialUser")
