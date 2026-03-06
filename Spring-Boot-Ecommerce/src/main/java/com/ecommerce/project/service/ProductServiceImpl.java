@@ -80,19 +80,31 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public ProductDTO updateProduct(Long productId, Product product) {
-        Product existedProduct = productRepository.findById(productId)
+
+        //Get the existing product from DB
+        Product productFromDB = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product","productId",productId));
 
-        existedProduct.setProductName(product.getProductName());
-        existedProduct.setDescription(product.getDescription());
-        existedProduct.setQuantity(product.getQuantity());
-        existedProduct.setPrice(product.getPrice());
-        existedProduct.setDiscount(product.getDiscount());
+        // Update the product info with the one in request body
+        productFromDB.setProductName(product.getProductName());
+        productFromDB.setDescription(product.getDescription());
+        productFromDB.setQuantity(product.getQuantity());
+        productFromDB.setPrice(product.getPrice());
+        productFromDB.setDiscount(product.getDiscount());
         double specialPrice = product.getPrice() - ((product.getDiscount() * 0.01) * product.getPrice());
-        existedProduct.setSpecialPrice(specialPrice);
+        productFromDB.setSpecialPrice(specialPrice);
 
-        Product savedProduct = productRepository.save(existedProduct);
+        // Save to database
+        Product savedProduct = productRepository.save(productFromDB);
 
         return modelMapper.map(savedProduct, ProductDTO.class);
+    }
+
+    @Override
+    public ProductDTO deleteProduct(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product","productId",productId));
+        productRepository.delete(product);
+        return modelMapper.map(product,ProductDTO.class);
     }
 }
