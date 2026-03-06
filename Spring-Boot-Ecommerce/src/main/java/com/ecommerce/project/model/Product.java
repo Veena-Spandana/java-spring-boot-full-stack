@@ -18,8 +18,8 @@ public class Product {
     private String image;
     private String description;
     private Integer quantity;
-    private double price;
-    private double discount;
+    private Double price;
+    private Double discount;
     private Double specialPrice;
 
     @ManyToOne
