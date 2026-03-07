@@ -9,12 +9,19 @@ import com.ecommerce.project.repositories.CategoryRepository;
 import com.ecommerce.project.repositories.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Service
-public class ProductServiceImpl implements ProductService{
+public class  ProductServiceImpl implements ProductService{
 
     @Autowired
     private ProductRepository productRepository;
@@ -24,6 +31,12 @@ public class ProductServiceImpl implements ProductService{
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private FileService fileService;
+
+    @Value("${project.name}")
+    private String path;
 
     @Override
     public ProductDTO addProduct(Long categoryId, ProductDTO productDTO) {
@@ -109,5 +122,26 @@ public class ProductServiceImpl implements ProductService{
                 .orElseThrow(() -> new ResourceNotFoundException("Product","productId",productId));
         productRepository.delete(product);
         return modelMapper.map(product,ProductDTO.class);
+    }
+
+    @Override
+    public ProductDTO updateProductImage(Long productId, MultipartFile image) throws IOException {
+        //Get the product from DB
+        Product productFromDb = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product","productId",productId));
+
+        // Upload image to server
+        // Get the file name of uploaded image
+
+        String fileName = fileService.uploadImage(path, image);
+
+        // Updating the new file name to the product
+        productFromDb.setImage(fileName);
+
+        //Save updated product
+        Product updatedProduct = productRepository.save(productFromDb);
+
+        //return DTO after mapping product to DTO
+        return modelMapper.map(updatedProduct, ProductDTO.class);
     }
 }
