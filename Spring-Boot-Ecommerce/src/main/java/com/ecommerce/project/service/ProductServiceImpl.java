@@ -112,11 +112,12 @@ public class  ProductServiceImpl implements ProductService{
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
 
-        
-        List<Product> products = productRepository.findByCategoryOrderByPriceAsc(category);
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize, sortByAndOrder);
+        Page<Product> pageProducts = productRepository.findByCategoryOrderByPriceAsc(category, pageDetails);
+        List<Product> products = pageProducts.getContent();
 
         if(products.isEmpty())
-            throw new APIException("No Products Exist!!!");
+            throw new APIException(category.getCategoryName() + "category does not have any products");
 
         List<ProductDTO> productDTOS = products.stream()
                 .map(product -> modelMapper.map(product,ProductDTO.class))
@@ -132,7 +133,7 @@ public class  ProductServiceImpl implements ProductService{
         List<Product> products = productRepository.findByProductNameLikeIgnoreCase('%' + keyword + '%');
 
         if(products.isEmpty())
-            throw new APIException("No Products Exist!!!");
+            throw new APIException("Products not found with keyword: " + keyword);
 
         List<ProductDTO> productDTOS = products.stream()
                 .map(product -> modelMapper.map(product,ProductDTO.class))
