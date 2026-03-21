@@ -50,7 +50,7 @@ public class SecurityConfig {
                         .requestMatchers("/signin").permitAll()
                         .anyRequest().authenticated());
         http.sessionManagement(session
-                -> session.sessionCreationPolicy((SessionCreationPolicy.STATELESS)));
+                -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         // http.formLogin(withDefaults());
         // http.httpBasic(withDefaults());
 
