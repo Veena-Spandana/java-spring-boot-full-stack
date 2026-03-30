@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -53,7 +54,7 @@ public class CartServiceImpl implements CartService{
         );
 
         if(cartItem != null){
-            throw new APIException("Product " + product.getProductName() + "already exists in the cart");
+            throw new APIException("Product " + product.getProductName() + " already exists in the cart");
         }
 
         if(product.getQuantity() == 0){
@@ -125,5 +126,48 @@ public class CartServiceImpl implements CartService{
         cart.setUser(authUtil.loggedInUser());
         Cart newCart = cartRepository.save(cart);
         return newCart;
+    }
+
+    @Override
+    public List<CartDTO> getAllCarts() {
+
+        List<Cart> carts = cartRepository.findAll();
+
+        if(carts.size() == 0){
+            throw new APIException("No cart exists");
+        }
+
+        List<CartDTO> cartDTOS = carts.stream()
+                .map(cart -> {
+                    CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
+                                                    // Cart has Cart Item, Cart Item has Product but when returning we have CartDTO(In this method)
+                                                    // CartDTO has ProductDTO
+
+                                                    // So from Cart Item we need to get this product and we need to transform Product to ProductDTO
+                                                    // Once we have List of ProductDTO , we set it in CartDTO
+
+                                                    // We need List of ProductDTO which is inside of CartDTO, Information of Product - we can get from Cart Item
+
+                    List<ProductDTO> products = cart.getCartItems().stream()
+                            .map(p -> modelMapper.map(p.getProduct(), ProductDTO.class))
+                            .collect(Collectors.toList());
+
+                    cartDTO.setProducts(products);
+                    return cartDTO;
+                }).collect(Collectors.toList());
+
+        return cartDTOS;
+    }
+
+    @Override
+    public CartDTO getCart(String emailId, Long cartId) {
+        Cart cart = cartRepository.findCartByEmailAndCartId(emailId, cartId);
+
+        if(cart == null){
+            throw new ResourceNotFoundException("Cart", "cartId", cartId);
+        }
+
+        CartDTO cartDTO = modelMapper.map(cart, CartDTO.class);
+        return cartDTO;
     }
 }

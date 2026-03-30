@@ -31,6 +31,7 @@ public class AuthUtil {
     }
 
     public User loggedInUser() {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         User user = userRepository.findByUserName(authentication.getName())
