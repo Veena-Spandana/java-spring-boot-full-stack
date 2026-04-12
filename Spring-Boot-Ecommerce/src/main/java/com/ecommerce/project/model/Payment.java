@@ -19,13 +19,14 @@ public class Payment {
     @OneToOne(mappedBy = "payment", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Order order;
 
+    private String paymentMethod;
     private String pgPaymentId; // pg - payment gateway eg : Stripe, PayPal, RazorPay
     private String pgStatus;
     private String pgResponseMessage;
     private String pgName;
 
-    public Payment(Long paymentId, String pgPaymentId, String pgStatus, String pgResponseMessage, String pgName) {
-        this.paymentId = paymentId;
+    public Payment(String paymentMethod, String pgPaymentId, String pgStatus, String pgResponseMessage, String pgName) {
+        this.paymentMethod = paymentMethod;
         this.pgPaymentId = pgPaymentId;
         this.pgStatus = pgStatus;
         this.pgResponseMessage = pgResponseMessage;
